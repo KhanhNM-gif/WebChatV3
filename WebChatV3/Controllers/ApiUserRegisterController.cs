@@ -103,7 +103,7 @@ namespace WebChatV3.Controllers
             string msg = "";
 
             msg = DoLogin(userLogin, out UserToken userToken, out UserAccount userAccount);
-            if (msg.Length > 0) { return Log.WriteErrorLog(msg).ToResultError(); }
+            if (msg.Length > 0) { return Log.ProcessError(msg).ToResultError(); }
 
             return new
             {

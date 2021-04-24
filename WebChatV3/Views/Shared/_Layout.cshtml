@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AdminLTE 3 | Dashboard</title>
-
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -27,8 +26,59 @@
     <link rel="stylesheet" type="text/css" href="~/Content/main.css">
 
 
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="Content/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <style>
+
+        .test1 {
+            display: flex;
+        }
+
+        .fisrtbar {
+            padding: 0px 12px 12px 12px;
+            background-color: rgb(32, 34, 37);
+            height: 100vh;
+        }
+
+        .item-2hkk8m {
+            height: 56px !important;
+            width: 48px;
+            margin: 0;
+            border-radius: 0;
+            transform: unset !important;
+            clip-path: inset(0 round 20%);
+            transition: .2s linear;
+            opacity: 1 !important;
+            background: rgba(80, 80, 80, 0);
+        }
+
+            .item-2hkk8m[style*="opacity: 0.7"] {
+                background: rgba(200, 200, 200, .6)
+            }
+
+            .item-2hkk8m[style*="opacity: 1"] {
+                background: rgba(200, 200, 200, .8)
+            }
+
+        .test2 {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            width: 48px;
+            outline: none;
+        }
+
+        .logodc {
+            height: 54px;
+            margin-bottom: 8px;
+        }
+
+        .cotent {
+            flex-grow: 100;
+        }
+    </style>
 </head>
 <body>
     <div class="container-fluid">
@@ -55,12 +105,10 @@
     <script src="~/Content/dist/js/demo.js"></script>
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <script src="~/Scripts/main.js"></script>
+    <script src="~/Scripts/handlebars.min.js"></script>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/handlebars.min.js"></script>
+
     @RenderSection("scripts", required: false)
-
-    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
-    <script src="~/signalr/hubs"></script>
 </body>
 </html>

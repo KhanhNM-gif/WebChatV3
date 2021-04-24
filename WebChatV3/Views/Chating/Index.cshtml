@@ -1,0 +1,326 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script src="~/Asset/js/ChatingIndexController.js"></script>
+    <script src="~/Asset/js/FriendController.js"></script>
+}
+<aside id="sidebarMenu" class="fisrtbar sidebar scrollbar force-overflow ">
+    <div class="logodc">
+        <a href="index3.html" class="brand-link text-center test2">
+            <img src="~/Content/dist/img/logo_discord.png" alt="AdminLTE Logo" class="brand-image"
+                 style="opacity: 1.0" data-toggle="tooltip" title="Trang chủ" data-placement="right">
+        </a>
+    </div>
+    <hr>
+    <div class="list-server">
+        <div class="test2">
+            <script id="server-template" type="x-handlebars-template">
+                    {{#each this}}
+                        <button type="button" class="btn-circle btn-xl" data-toggle="tooltip" title={{Name}} data-placement="right">
+                            {{Acronym}}
+                        </button>
+                    {{/each}}
+            </script>
+
+        </div>
+    </div>
+</aside>
+<main class="cotent">
+    <div class="hold-transition sidebar-mini layout-fixed">
+        <div class="wrapper">
+            <aside class="main-sidebar sidebar-dark-primary">
+                <div class=privateChannels>
+                    <div class="ml-0 p-2 border-bottom-black">
+                        <button class="btn-sm btn-black text-gray w-100 btn-search">Bắt đầu cuộc trò chuyện</button>
+                    </div>
+                    <div class="scrollbar force-overflow" id="style-1">
+                        <a class="container1 channel1" href="#">
+                            <div class="m-1 p-1 bg-btn-select rounded">
+                                <i class="fas fa-male fa-lg m-1"></i>
+                                <span>Bạn bè</span>
+                            </div>
+                        </a>
+                        <a class="container1 channel1" href="#">
+                            <div class="m-1 p-1 rounded">
+                                <i class="fas fa-user-friends fa-lg m-1"></i>
+                                <span>Nhóm</span>
+                            </div>
+
+                        </a>
+                        <ul class="container1 navbar-nav ml-auto text-white">
+                            <li class="d-inline-block text-center"><div class="channel1">Tin nhắn trực tiếp</div></li>
+                            <li class="nav-item dropdown d-inline-block">
+                                <a class="nav-link " href="#" data-target="#myDropdown" data-toggle="dropdown" style="font-size:14px; margin-left:20px">
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right bg-dark" style="z-index:2;width:410px;margin-left:330px" id="#myDropdown">
+                                    <div class="text-white m-2" style="font-size:20px">
+                                        Chọn bạn bè
+                                    </div>
+                                    <div class="text-white-50 m-2">Bạn có thể  thêm 9 người bạn nữa</div>
+                                    <input class="form-control form-control-sidebar m-2" type="search" placeholder="Nhập tên người dùng của bạn bè" aria-label="Search" style="width:390px">
+                                    <div class="form-control form-control-sidebar m-2" style="width:390px;height:50px">
+                                        <img src="~/Content/dist/img/logo_discord.png" alt="AdminLTE Logo" class="brand-image img-circle"
+                                             style="opacity:2.0;width:30px;height:30px;margin-left:3px;" />
+                                        <span class="text-black-50">Chipxinhvodoi</span>
+                                        <span><input type="checkbox" name="choice" value="choice" /></span>
+                                    </div>
+                                    <button class="btn btn-info align-self-xl-center m-2" style="width:390px">Tạo nhóm DM</button>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="listfen rounded">
+                            <div class="list-friend">
+                                <script id="friend-template" type="x-handlebars-template">
+                                {{#each this}}
+                                    <div class="list-friend-item clickFriend" href="{{ObjectGuid}}">
+                                        <div class="avatar online">
+                                            <img class="rounded-circle" src={{Image}} alt="" />
+                                        </div>
+                                        <div class="content-friend-item">
+                                            <div class="nameDeco">{{Name}}</div>
+                                        </div>
+                                        <div class="chidren-float-right">
+                                            <i class="fas fa-times"></i>
+                                        </div>
+                                    </div>
+                                {{/each}}
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Brand Logo -->
+                <section class="Statusbyme">
+                    <div class="containerPanel">
+                        <div class="avatar online">
+                            <img class="rounded-circle" src="~/Content/dist/img/logo_discord.png" alt="" />
+                        </div>
+                        <div class="nameTag">
+                            <div class="usernameContainer">Lan Huơng</div>
+                            <div class="subtext" id="idUser">#123123</div>
+                        </div>
+                        <div class="controlsMic">
+                            <span class="m-1"><i class="fas fa-microphone-slash"></i></span>
+                            <span class="m-1"><i class="fas fa-headphones-alt"></i></span>
+                            <span class="m-1"><i class="fas fa-cog"></i></span>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- /.sidebar -->
+            </aside>
+            <!-- Navbar Chat -->
+            <nav class="main-header navbar navbar-expand navbar-dark elevation-1">
+                <!-- Left navbar links -->
+                <div class="left-navbar">
+                    <i class="fas fa-at"></i>
+                    Lan Hương
+                </div>
+
+                <!-- Right navbar links -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Messages Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#">
+                            <i class="far fa-comments"></i>
+                            <span class="badge badge-danger navbar-badge">3</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
+                            <a href="#" class="dropdown-item">
+                                <!-- Message Start -->
+                                <div class="media">
+                                    <img src="~/Content/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                    <div class="media-body">
+                                        <h3 class="dropdown-item-title">
+                                            Brad Diesel
+                                            <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                                        </h3>
+                                        <p class="text-sm">Call me whenever you can...</p>
+                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                    </div>
+                                </div>
+                                <!-- Message End -->
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <!-- Message Start -->
+                                <div class="media">
+                                    <img src="~/Content/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                    <div class="media-body">
+                                        <h3 class="dropdown-item-title">
+                                            John Pierce
+                                            <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                                        </h3>
+                                        <p class="text-sm">I got your message bro</p>
+                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                    </div>
+                                </div>
+                                <!-- Message End -->
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <!-- Message Start -->
+                                <div class="media">
+                                    <img src="~/Content/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                    <div class="media-body">
+                                        <h3 class="dropdown-item-title">
+                                            Nora Silvester
+                                            <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                                        </h3>
+                                        <p class="text-sm">The subject goes here</p>
+                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+                                    </div>
+                                </div>
+                                <!-- Message End -->
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                        </div>
+                    </li>
+                    <!-- Notifications Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#">
+                            <i class="far fa-bell"></i>
+                            <span class="badge badge-warning navbar-badge">15</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            <span class="dropdown-item dropdown-header">15 Notifications</span>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-envelope mr-2"></i> 4 new messages
+                                <span class="float-right text-muted text-sm">3 mins</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-users mr-2"></i> 8 friend requests
+                                <span class="float-right text-muted text-sm">12 hours</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-file mr-2"></i> 3 new reports
+                                <span class="float-right text-muted text-sm">2 days</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.navbar -->
+            <!-- Thanh Ben Trai Thu 2 -->
+            <!-- Noi DUng -->
+            <!-- /.control-sidebar -->
+        </div>
+        <!-- ./wrapper -->
+    </div>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="container-fluid">
+            <div class="tabPeople">
+                <div class="peopleComlumn">
+                    <div class="listFriends">
+                        <div class="card">
+                            <div class="card-body msg_card_body s message scrollbar force-overflow" id="div_msg">
+                                <script id="message-template" type="x-handlebars-template">
+                                {{#each this}}
+                                {{#if_eq ObjectCategory 0}}
+                                <div class="d-flex justify-content-start mb-4">
+                                    <div class="img_cont_msg">
+                                        <img src="{{UserAccount.Image}}" class="rounded-circle user_img_msg">
+                                    </div>
+                                    <div class="msg_cotainer">
+                                        {{MessageContent}}
+                                        <span class="msg_time">{{CreateDate}}</span>
+                                    </div>
+                                </div>
+                                {{else}}
+                                <div class="d-flex justify-content-end mb-4">
+                                    <div class="msg_cotainer_send">
+                                        {{MessageContent}}
+                                        <span class="msg_time_send">{{CreateDate}}</span>
+                                    </div>
+                                    <div class="img_cont_msg">
+                                        <img src="{{UserAccount.Image}}" class="rounded-circle user_img_msg">
+                                    </div>
+                                </div>
+                                {{/if_eq}}
+                                {{/each}}
+                                </script>
+                            </div>
+                            <div class="card-footer">
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+                                    </div>
+                                    <div class="form-control type_msg" placeholder="Type your message..." contenteditable="true" id="div_sendMsg">
+                                    </div>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text send_btn"><i class="far fa-grin mr-2"></i><i class="fas fa-location-arrow" id="i_sendMessage"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Cột Bên Phải Ngoài Cùng -->
+                <div class="member-comlumn">
+                    <div class="content-member-group header-member-group">
+                        <span>
+                            Trực tuyến-3
+                        </span>
+                    </div>
+                    <div class="content-member-group member">
+                        <div class="layout-member">
+                            <div class="avatar online">
+                                <img class="rounded-circle" src="~/Content/dist/img/logo_discord.png" alt="" />
+                            </div>
+                            <div class="content-friend-item">
+                                <div class="nameDeco">Chipxinhvodoi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-member-group member">
+                        <div class="layout-member">
+                            <div class="avatar online">
+                                <img class="rounded-circle" src="~/Content/dist/img/logo_discord.png" alt="" />
+                            </div>
+                            <div class="content-friend-item">
+                                <div class="nameDeco">Chipxinhvodoi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-member-group member">
+                        <div class="layout-member">
+                            <div class="avatar online">
+                                <img class="rounded-circle" src="~/Content/dist/img/logo_discord.png" alt="" />
+                            </div>
+                            <div class="content-friend-item">
+                                <div class="nameDeco">Chipxinhvodoi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-member-group header-member-group">
+                        <span>
+                            Ngoại Tuyến-3
+                        </span>
+                    </div>
+                    <div class="content-member-group member">
+                        <div class="layout-member offline-member">
+                            <div class="avatar offline">
+                                <img class="rounded-circle" src="~/Content/dist/img/logo_discord.png" alt="" />
+                            </div>
+                            <div class="content-friend-item">
+                                <div class="nameDeco">Chipxinhvodoi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+        <!-- /.content -->
+    </div>
+</main>

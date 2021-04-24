@@ -12,7 +12,6 @@
                 "Password": $("input[name='pass']").val(),
                 "IsRememberPassword": false
             };
-            console.log(data);
 
             const res = await fetch('/api/ApiUserRegister/Login', {
                 method: 'POST',
@@ -22,6 +21,17 @@
                 body: JSON.stringify(data),
             })
             const json = await res.json();
+
+            console.log(json);
+
+            if (json.Status == 0) {
+                localStorage.setItem("Authorization", json.Object.userToken.Token);
+                alert("Đăng nhập thành công");
+                window.location.replace("/Chating/Index");
+            } 
+            else {
+                alert(json.Object);
+            }
 
         });
     }

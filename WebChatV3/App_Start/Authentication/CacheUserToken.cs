@@ -1,9 +1,12 @@
 ﻿using BSS;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Web;
 
 /// <summary>
@@ -56,6 +59,13 @@ public static class CacheUserToken
         string msg = GetUserToken(out UserToken);
         if (msg.Length > 0) return Log.ProcessError(msg).ToResult(-1);
         return Result.ResultOk;
+    }
+    public static bool GetResultUserToken(string Token)
+    {
+        string msg = GetUserToken(Token,out UserToken user);
+        if (msg.Length > 0) return false;
+
+        return true;
     }
     public static string GetUserToken(out UserToken UserToken)
     {

@@ -9,6 +9,7 @@ public class User
 {
     public long UserID { get; set; }
     public Guid ObjectGuid { get; set; }
+    public string Username { get; set; }
     public string Email { get; set; }
     public string Mobile { get; set; }
     public byte[] PasswordHash { get; set; }
@@ -26,7 +27,7 @@ public class User
            {
                UserID,
                Email,
-               Mobile,
+               Username,
                PasswordHash,
                PasswordSalt,
                IsActive,
