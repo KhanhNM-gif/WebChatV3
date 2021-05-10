@@ -117,18 +117,12 @@ public static class CacheUserToken
 
         return "";
     }
-    public static string Logout()
+    public static string Logout(UserToken userToken)
     {
         string msg = "";
-        UserToken UserToken;
-        msg = GetUserToken(out UserToken);
-        if (msg.Length > 0) return msg;
 
-        bool isRemove = LtUser_Token.Remove(UserToken);
+        bool isRemove = LtUser_Token.Remove(userToken);
         if (!isRemove) return "Xóa token lỗi";
-
-        msg = UserToken.Delete(UserToken.ID);
-        if (msg.Length > 0) return msg;
 
         return msg;
     }

@@ -17,6 +17,10 @@ public class FriendShip
     {
         return DBM.GetOne("usp_Friendship_GetOneBy2IDUser", new { idUser1, idUser2 }, out outFriendShip);
     }
+    public static string GetOneByObjectGuid(Guid ObjectGuid, out FriendShip outFriendShip)
+    {
+        return DBM.GetOne("usp_Friendship_GetOneByObjectGuid", new { ObjectGuid }, out outFriendShip);
+    }
 
     public static string InsertByObjectGuidRegister(DBM dbm, Guid ObjectGuid, out FriendShip outFriendShip)
     {

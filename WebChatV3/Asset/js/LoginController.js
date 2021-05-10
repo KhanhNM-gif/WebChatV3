@@ -26,14 +26,21 @@
 
             if (json.Status == 0) {
                 localStorage.setItem("Authorization", json.Object.userToken.Token);
+                localStorage.setItem("AccountUser", json.Object.userAccount.Id);
                 alert("Đăng nhập thành công");
-                window.location.replace("/Chating/Index");
+                window.location.replace("/channels/@me");
             } 
             else {
                 alert(json.Object);
             }
 
         });
+    },
+    Authentication: function (json) {
+        if (json.Status == -1) {
+            alert(json.Object);
+            window.location.replace("/UserRegister/Login");
+        }
     }
 }
 Login.init();

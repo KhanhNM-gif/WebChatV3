@@ -5,11 +5,9 @@ using System.Web;
 
 namespace WebChatV3.Models
 {
-    public class InputSendMessage
+    public class InputSendMessage : Message
     {
-        public string connectionID { get; set; }
-        public Guid guidSend { get; set; }
-        public bool isPrivate { get; set; }
-        public string ContentMessage { get; set; }
+        public string ConnectionID { get; set; }
+        public Guid GuidServer { get; set; }
     }
 }

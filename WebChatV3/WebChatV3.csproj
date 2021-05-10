@@ -161,12 +161,18 @@
     <Compile Include="App_Start\Authentication\CacheUserToken.cs" />
     <Compile Include="App_Start\Authentication\UserToken.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\Channel.cs" />
     <Compile Include="App_Start\Common.cs" />
+    <Compile Include="App_Start\Constants.cs" />
+    <Compile Include="App_Start\FileAttach\FileAttach.cs" />
+    <Compile Include="App_Start\FileAttach\FileAttachObject.cs" />
+    <Compile Include="App_Start\FileAttach\FileAttachUpload.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\FriendShip.cs" />
     <Compile Include="App_Start\FriendshipRegisterHistory.cs" />
     <Compile Include="App_Start\Member.cs" />
     <Compile Include="App_Start\Message.cs" />
+    <Compile Include="App_Start\Role.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Server.cs" />
     <Compile Include="App_Start\Startup.cs" />
@@ -174,6 +180,7 @@
     <Compile Include="App_Start\UserRegister\User.cs" />
     <Compile Include="App_Start\UserRegister\UserRegisterOTP.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="App_Start\WebChatValidate.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
     <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
@@ -202,8 +209,13 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\ApiUploadFileController.cs" />
+    <Compile Include="Controllers\ApiUserAccountController.cs" />
+    <Compile Include="Controllers\ApiChannelController.cs" />
     <Compile Include="Controllers\ApiChatingController.cs" />
+    <Compile Include="Controllers\ApiMemberController.cs" />
     <Compile Include="Controllers\ApiMessageController.cs" />
+    <Compile Include="Controllers\ApiServerController.cs" />
     <Compile Include="Controllers\ApiUserRegisterController.cs" />
     <Compile Include="Controllers\ChatingController.cs" />
     <Compile Include="Controllers\ApiFriendshipController.cs" />
@@ -225,9 +237,11 @@
     <Content Include="Asset\js\ChatHub.js" />
     <Content Include="Asset\js\ChatingIndexController.js" />
     <Content Include="Asset\js\FriendController.js" />
+    <Content Include="Asset\js\Modal.js" />
     <Content Include="Asset\js\RegisterController.js" />
     <Content Include="Asset\js\LoginController.js" />
     <Content Include="Asset\js\ServerController.js" />
+    <Content Include="Asset\js\UploadFile.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -269,6 +283,7 @@
     <Content Include="Content\dist\css\bootstrap.min.css" />
     <Content Include="Content\dist\css\button.css" />
     <Content Include="Content\dist\css\Site.css" />
+    <Content Include="Content\dist\css\stylechatbox.css" />
     <Content Include="Content\dist\css\test.css" />
     <Content Include="Content\dist\img\AdminLTELogo.png" />
     <Content Include="Content\dist\img\avatar.png" />
@@ -391,6 +406,8 @@
     <Content Include="Content\docs\_includes\sidebar.html" />
     <Content Include="Content\docs\_layouts\default.html" />
     <Content Include="Content\docs\_layouts\page.html" />
+    <Content Include="Content\jquery.contextMenu.css" />
+    <Content Include="Content\jquery.contextMenu.min.css" />
     <Content Include="Content\main.css" />
     <Content Include="Content\pages\calendar.html" />
     <Content Include="Content\pages\charts\chartjs.html" />
@@ -2547,16 +2564,29 @@
     <Content Include="Content\plugins\summernote\summernote.js.map" />
     <Content Include="Content\plugins\summernote\summernote.min.js.map" />
     <Content Include="Content\plugins\toastr\toastr.js.map" />
+    <Content Include="font\context-menu-icons.woff2" />
+    <Content Include="font\context-menu-icons.woff" />
+    <Content Include="font\context-menu-icons.ttf" />
+    <Content Include="font\context-menu-icons.eot" />
+    <Content Include="Content\jquery.contextMenu.min.css.map" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\handlebars.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\jquery.contextMenu.js" />
+    <Content Include="Scripts\jquery.contextMenu.min.js" />
     <Content Include="Scripts\jquery.signalR-2.4.1.js" />
     <Content Include="Scripts\jquery.signalR-2.4.1.min.js" />
+    <Content Include="Scripts\jquery.ui.position.js" />
+    <Content Include="Scripts\jquery.ui.position.min.js" />
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2573,9 +2603,13 @@
     <Content Include="Views\UserRegister\Register.cshtml" />
     <Content Include="Views\Chating\Index.cshtml" />
     <Content Include="Views\Chating\Index2.cshtml" />
+    <Content Include="Scripts\moment.min.js.map" />
+    <Content Include="Scripts\moment-with-locales.min.js.map" />
+    <Content Include="Scripts\jquery.contextMenu.min.js.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="File\FileUpload\" />
     <Folder Include="Views\ApiChating\" />
   </ItemGroup>
   <ItemGroup>

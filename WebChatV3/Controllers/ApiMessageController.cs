@@ -11,7 +11,7 @@ namespace WebChatV3.Controllers
     public class ApiMessageController : Authentication
     {
         [HttpGet]
-        public Result LoadMessage(Guid GuidUser)
+        public Result LoadPrivateMessage(Guid GuidUser)
         {
             if (!ResultCheckToken.isOk) return ResultCheckToken;
 
@@ -35,7 +35,37 @@ namespace WebChatV3.Controllers
             if (msg.Length > 0) return msg;
             if (outFriendShip == null) return "Bạn chưa kết bạn với người này".ToMessageForUser();
 
-            msg = Message.GetPM(UserToken.UserID, outUserAccount.Id, out outLtMessage);
+            msg = Message.GetPrivateMessage(outFriendShip.ObjectGuid, out outLtMessage);
+            if (msg.Length > 0) return msg;
+
+            var IdUsers = string.Join(",",outLtMessage.Select(v=>v.UserIDCreate).Distinct().ToList());
+            msg = UserAccount.GetListByIdUsers(IdUsers,out List<UserAccount> outLtUser);
+            if (msg.Length > 0) return msg;
+
+            foreach (var item in outLtUser) outLtMessage.Where(v => v.UserIDCreate == item.Id).ToList().ForEach(v => v.UserAccount = item);
+
+            return msg;
+        }
+        [HttpGet]
+        public Result LoadPublicMessage(Guid GuidServer, Guid GuidChannel)
+        {
+            if (!ResultCheckToken.isOk) return ResultCheckToken;
+
+            string msg = DoLoadPublicMessage(GuidServer, GuidChannel, out List<Message> outLtMessage);
+            if (msg.Length > 0) return Log.ProcessError(msg).ToResultError();
+
+            return outLtMessage.ToResultOk();
+        }
+        private string DoLoadPublicMessage(Guid GuidServer, Guid GuidChannel, out List<Message> outLtMessage)
+        {
+            outLtMessage = null;
+
+            string msg = Server.GetOneByObjectGuid(GuidServer, out Server outServer);
+            if (msg.Length > 0) return msg;
+            if (outServer == null) return "Server chat không tồn tại".ToMessageForUser();
+            if (outServer.isDelete) return "Server chat đã bị xóa".ToMessageForUser();
+
+            msg = Message.GetPublicMessage(GuidChannel, out outLtMessage);
             if (msg.Length > 0) return msg;
 
             var IdUsers = string.Join(",",outLtMessage.Select(v=>v.UserIDCreate).Distinct().ToList());

@@ -34,6 +34,5 @@
 
         });
     }
-    LoadServer
 }
 Server.init();

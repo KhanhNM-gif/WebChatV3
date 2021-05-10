@@ -6,9 +6,13 @@ using System.Web;
 
 public class Message
 {
+    private const bool Private_Messge = true;
+    private const bool Public_Messge = false;
+
     public int ObjectCategory { get; set; }
     public long Id { get; set; }
     public UserAccount UserAccount { get; set; }
+    public Guid RoomGuid { get; set; }
     public Guid ObjectGuid { get; set; }
     public long UserIDCreate { get; set; }
     public int MessageType { get; set; }
@@ -18,9 +22,34 @@ public class Message
     public DateTime LastUpdate { get; set; }
     public bool IsMessagePrivate { get; set; }
 
-    public static string GetPM(long IdUser,long IdUserFriend,out List<Message> outLtMessage)
+    public static string GetPrivateMessage(Guid RoomGuid, out List<Message> outLtMessage)
     {
-        return DBM.GetList("usp_Message_GetPM", new { IdUser, IdUserFriend }, out outLtMessage);
+        bool IsMessagePrivate = true;
+        return DBM.GetList("usp_Message_GetMessages", new { RoomGuid, IsMessagePrivate }, out outLtMessage);
+    }
+    public static string GetPublicMessage(Guid RoomGuid, out List<Message> outLtMessage)
+    {
+        bool IsMessagePrivate = false;
+        return DBM.GetList("usp_Message_GetMessages", new { RoomGuid, IsMessagePrivate }, out outLtMessage);
+    }
+
+    public string InsertOrUpdate(DBM dbm,out Message outMessage)
+    {
+        outMessage = null;
+
+        string msg = dbm.SetStoreNameAndParams("usp_Message_InsertOrUpdate",
+            new
+            {
+                Id,
+                RoomGuid,
+                UserIDCreate,
+                MessageType,
+                MessageContent,
+                IsMessagePrivate
+            });
+        if (msg.Length > 0) return msg;
+
+        return dbm.GetOne(out outMessage);
     }
 }
 

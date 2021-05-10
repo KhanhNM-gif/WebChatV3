@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -24,41 +25,46 @@ public class ListGroupHub
         return ListIdGroup;
     }
 
-    public void CreatePrivateGroupHub(FriendShip outFriendShip, out string NameGroup)
+    public  void CreatePrivateGroupHub(Guid guidFriend, string NameGroup,IHubContext hubContext)
     {
         GroupHub groupHub = new GroupHub();
+
+        FriendShip.GetOneByObjectGuid(guidFriend, out FriendShip outFriendShip);
 
         var list = ChatHub.ConnectedUsers.Where(x => x.Value == outFriendShip.IdUser1 || x.Value == outFriendShip.IdUser2).ToDictionary(p => p.Key, p => p.Value);
 
         foreach (var IDUserConnect in list)
         {
-            groupHub.ltIdUserConnect.Add(IDUserConnect.Key);
+            if (!groupHub.ltIdUserConnect.Exists(x => x == IDUserConnect.Key))
+            {
+                groupHub.ltIdUserConnect.Add(IDUserConnect.Key);
+                 hubContext.Groups.Add(IDUserConnect.Key, NameGroup);
+            }
         }
-
-        NameGroup = "private " + outFriendShip.ObjectGuid.ToString();
 
         listGroupHub.Add(NameGroup, groupHub);
     }
-    public void CreatePublicGroupHub(Guid ObjectGuid, out string NameGroup)
+    public  void CreatePublicGroupHub( Guid GuidServer, string NameGroup, IHubContext hubContext)
     {
         GroupHub groupHub = new GroupHub();
-        NameGroup = "";
 
-        string msg = UserAccount.GetListByGuidServer(ObjectGuid,out List<UserAccount> outUserAccount);
+        string msg = Member.GetList(GuidServer, out List<Member> outMember);
         if (msg.Length > 0) return;
 
-        var list = ChatHub.ConnectedUsers.Where(x => outUserAccount.Exists(y => y.Id == x.Value));
+        var list = ChatHub.ConnectedUsers.Where(x => outMember.Exists(y => y.Id == x.Value)).ToList();
 
         foreach (var IDUserConnect in list)
         {
-            groupHub.ltIdUserConnect.Add(IDUserConnect.Key);
+            if (!groupHub.ltIdUserConnect.Exists(x => x == IDUserConnect.Key))
+            {
+                groupHub.ltIdUserConnect.Add(IDUserConnect.Key);
+                hubContext.Groups.Add(IDUserConnect.Key, NameGroup);
+            }
         }
-
-        NameGroup = "pubic " + ObjectGuid.ToString();
 
         listGroupHub.Add(NameGroup, groupHub);
     }
-    public GroupHub GetGroupHub(string GroupID,bool isPrivate)
+    public GroupHub GetGroupHub(string GroupID, bool isPrivate)
     {
         listGroupHub.TryGetValue((isPrivate ? "private " : "public ") + GroupID, out GroupHub outGroupHub);
 
@@ -76,6 +82,23 @@ public class ListGroupHub
             }
         }
         return false;
+    }
+    public static string GetConnectMembers(Guid GuidServer, out List<Member> outLtOnlineMember, out List<Member> outLtOfflineMember)
+    {
+        outLtOnlineMember = outLtOfflineMember = null;
+
+        string msg = Member.GetList(GuidServer, out List<Member> outMember);
+        if (msg.Length > 0) return msg;
+
+        var listIDConnect = ChatHub.ConnectedUsers.Values.ToList();
+
+        outLtOnlineMember = outMember.Where(x => listIDConnect.Exists(y => x.Id == y)).ToList();
+
+        foreach (var item in outLtOnlineMember) outMember.Remove(item);
+
+        outLtOfflineMember = outMember;
+
+        return msg;
     }
 
     public bool CheckExistGroup(string NameGroup, out GroupHub groupHub)

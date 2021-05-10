@@ -5,25 +5,230 @@
 @section scripts{
     <script src="~/Asset/js/ChatingIndexController.js"></script>
     <script src="~/Asset/js/FriendController.js"></script>
+    <script src="~/Asset/js/UploadFile.js"></script>
+    <script id="friend-template" type="x-handlebars-template">
+    {{#each this}}
+    <div class="list-friend-item clickFriend" href="{{ObjectFriend}}" data-id="{{ObjectGuid}}">
+        <div class="avatar online">
+            <img class="rounded-circle" src={{Image}} alt="" />
+        </div>
+        <div class="content-friend-item">
+            <div class="nameDeco">{{Name}}</div>
+        </div>
+        <div class="chidren-float-right">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+    {{/each}}
+    </script>
+    <script id="me-slide-bar-template" type="x-handlebars-template">
+
+        <div class="ml-0 p-2 border-bottom-black">
+            <button class="btn-sm btn-black text-gray w-100 btn-search">Bắt đầu cuộc trò chuyện</button>
+        </div>
+        <div class="scrollbar force-overflow" id="style-1">
+            <a class="container1 channel1" href="#">
+                <div class="m-1 p-1 bg-btn-select rounded">
+                    <i class="fas fa-male fa-lg m-1"></i>
+                    <span>Bạn bè</span>
+                </div>
+            </a>
+            <a class="container1 channel1" href="#">
+                <div class="m-1 p-1 rounded">
+                    <i class="fas fa-user-friends fa-lg m-1"></i>
+                    <span>Nhóm</span>
+                </div>
+
+            </a>
+            <ul class="container1 navbar-nav ml-auto text-white">
+                <li class="d-inline-block text-center"><div class="channel1">Tin nhắn trực tiếp</div></li>
+                <li class="nav-item dropdown d-inline-block">
+                    <a class="nav-link " href="#" data-target="#myDropdown" data-toggle="dropdown" style="font-size:14px; margin-left:20px">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right bg-dark" style="z-index:2;width:410px;margin-left:330px" id="#myDropdown">
+                        <div class="text-white m-2" style="font-size:20px">
+                            Chọn bạn bè
+                        </div>
+                        <div class="text-white-50 m-2">Bạn có thể  thêm 9 người bạn nữa</div>
+                        <input class="form-control form-control-sidebar m-2" type="search" placeholder="Nhập tên người dùng của bạn bè" aria-label="Search" style="width:390px">
+                        <div class="form-control form-control-sidebar m-2" style="width:390px;height:50px">
+                            <img src="~/Content/dist/img/logo_discord.png" alt="AdminLTE Logo" class="brand-image img-circle"
+                            style="opacity:2.0;width:30px;height:30px;margin-left:3px;" />
+                            <span class="text-black-50">Chipxinhvodoi</span>
+                            <span><input type="checkbox" name="choice" value="choice" /></span>
+                        </div>
+                        <button class="btn btn-info align-self-xl-center m-2" style="width:390px">Tạo nhóm DM</button>
+                    </div>
+                </li>
+            </ul>
+            <div class="listfen rounded">
+                <div class="list-friend">
+                    <!--list Friend-->
+                    
+                </div>
+            </div>
+        </div>
+    </script>
+    <script id="server-slide-bar-template" type="x-handlebars-template">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Don't Starve Together
+        </button>
+        <div class="dropdown-menu" id="dropdownMenuEditServer">
+          
+          <a class="dropdown-item" href="#">Rời nhóm</a>
+          <a class="dropdown-item" href="#">Thêm kênh</a>
+          <a class="dropdown-item" href="#">Gửi lời mời</a>
+          <a class="dropdown-item" href="#">Xóa máy chủ</a>
+        </div>
+  </div>
+
+  <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+      <li class="nav-item menu-open">
+        <a href="#" class="nav-link">
+          <p class="tilte-type-chanel">
+              Kênh chat
+              <i class="fas fa-angle-left right"></i>
+          </p>
+      </a>
+      <ul class="nav nav-treeview">
+          <li class="nav-item p-6">
+            {{#each this}}
+            <a href="{{ObjectGuidServer}}/{{ObjectGuid}}" class="nav-link click-channel">
+                <i class="fas fa-hashtag"></i>
+                <p>{{Name}}</p>
+                {{/each}}
+            </a>
+        </li>
+    </ul>
+</li>
+<li class="nav-item menu-open">
+    <a href="#" class="nav-link">
+      <p class="tilte-type-chanel">
+        Kênh đàm thoại
+        <i class="fas fa-angle-left right"></i>
+    </p>
+</a>
+<ul class="nav nav-treeview">
+  <li class="nav-item p-6">
+    <a href="pages/layout/top-nav.html" class="nav-link">
+      <i class="fas fa-volume-up"></i>
+      <p>Chung</p>
+  </a>
+</li>
+</ul>
+</li>
+</ul>
+    </script>
+    <script id="message-template" type="x-handlebars-template">
+    {{#each this}}
+    {{#if_user UserIDCreate}}
+    <div class="d-flex justify-content-end mb-4">
+        <div class="msg_cotainer_send">
+            {{MessageContent}}
+            <span class="msg_time_send text-right">{{formatDate CreateDate "short"}}</span>
+        </div>
+        <div class="img_cont_msg">
+            <img src="{{UserAccount.Image}}" class="rounded-circle user_img_msg">
+        </div>
+    </div>
+    {{else}}
+    <div class="d-flex justify-content-start mb-4">
+        <div class="img_cont_msg">
+            <img src="{{UserAccount.Image}}" class="rounded-circle user_img_msg">
+        </div>
+        <div class="msg_cotainer">
+            {{MessageContent}}
+            <span class="msg_time">{{formatDate CreateDate "short"}}</span>
+        </div>
+    </div>
+    {{/if_user}}
+    {{/each}}
+    </script>
+    <script id="server-template" type="x-handlebars-template">
+    {{#each this}}
+    <div class="baoserver">
+        <input type="image" src="{{Image}}" class="btn-circle click-server btn-xl" data-toggle="tooltip" title="{{Name}}" href="{{ObjectGuid}}{{ChannelDefault}}" data-placement="right"></input>
+    </div>
+    {{/each}}
+    </script>
+    <script id="role-server-template" type="x-handlebars-template">
+    {{#each this}}
+        <a class="dropdown-item" href="#" data-tab="{{RoleValue}} data-TabId="{{TabId}}">{{NameRole}}</a>
+    {{/each}}
+    </script>
+
+    <script id="nof-message-template" type="x-handlebars-template">
+    {{#each this}}
+    <a href="#" class="dropdown-item">
+        <div class="media">
+            <img src="{{UserAccount.Image}}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+            <div class="media-body">
+                <h3 class="dropdown-item-title">
+                    {{UserAccount.Name}}
+                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                </h3>
+                <p class="text-sm">{{MessageContent}}</p>
+            </div>
+        </div>
+    </a>
+    {{/each}}
+    </script>
+
+    <script id="member-offline-template" type="x-handlebars-template">
+    {{#each this}}
+    <li class="nav-item">
+        <a href="#" class="nav-link">
+            <div class="content-member-group offline-member">
+                <div class="layout-member">
+                    <div class="avatar offline">
+                        <img class="rounded-circle" src="{{Image}}" alt="" />
+                    </div>
+                    <div class="content-friend-item">
+                        <div class="nameDeco">{{Name}}</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </li>
+    {{/each}}
+    </script>
+    <script id="member-online-template" type="x-handlebars-template">
+    {{#each this}}
+    <li class="nav-item">
+        <a href="#" class="nav-link">
+            <div class="content-member-group member">
+                <div class="layout-member">
+                    <div class="avatar online">
+                        <img class="rounded-circle" src="{{Image}}" alt="" />
+                    </div>
+                    <div class="content-friend-item">
+                        <div class="nameDeco">{{Name}}</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </li>
+    {{/each}}
+    </script>
 }
 <aside id="sidebarMenu" class="fisrtbar sidebar scrollbar force-overflow ">
     <div class="logodc">
-        <a href="index3.html" class="brand-link text-center test2">
+        <a href="#" class="brand-link text-center test2">
             <img src="~/Content/dist/img/logo_discord.png" alt="AdminLTE Logo" class="brand-image"
                  style="opacity: 1.0" data-toggle="tooltip" title="Trang chủ" data-placement="right">
         </a>
     </div>
     <hr>
-    <div class="list-server">
-        <div class="test2">
-            <script id="server-template" type="x-handlebars-template">
-                    {{#each this}}
-                        <button type="button" class="btn-circle btn-xl" data-toggle="tooltip" title={{Name}} data-placement="right">
-                            {{Acronym}}
-                        </button>
-                    {{/each}}
-            </script>
 
+    <div class="list-server">
+        <div class="slide-bar-server">
+            <!--server-slide-bar-template-->
+        </div>
+        <hr />
+        <div class="baoserver">
+            <input type="image" src="https://mpng.subpng.com/20180409/gye/kisspng-computer-icons-symbol-icon-design-google-plus-5acb0027158c40.8641644415232532870883.jpg" class="btn-circle btn-xl" data-toggle="modal" title="Thêm máy chủ" data-target="#modal-create-server" data-placement="right">
         </div>
     </div>
 </aside>
@@ -32,6 +237,7 @@
         <div class="wrapper">
             <aside class="main-sidebar sidebar-dark-primary">
                 <div class=privateChannels>
+                    <!--Bạn bè trang chủ-->
                     <div class="ml-0 p-2 border-bottom-black">
                         <button class="btn-sm btn-black text-gray w-100 btn-search">Bắt đầu cuộc trò chuyện</button>
                     </div>
@@ -47,7 +253,6 @@
                                 <i class="fas fa-user-friends fa-lg m-1"></i>
                                 <span>Nhóm</span>
                             </div>
-
                         </a>
                         <ul class="container1 navbar-nav ml-auto text-white">
                             <li class="d-inline-block text-center"><div class="channel1">Tin nhắn trực tiếp</div></li>
@@ -55,39 +260,12 @@
                                 <a class="nav-link " href="#" data-target="#myDropdown" data-toggle="dropdown" style="font-size:14px; margin-left:20px">
                                     <i class="fas fa-plus"></i>
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-right bg-dark" style="z-index:2;width:410px;margin-left:330px" id="#myDropdown">
-                                    <div class="text-white m-2" style="font-size:20px">
-                                        Chọn bạn bè
-                                    </div>
-                                    <div class="text-white-50 m-2">Bạn có thể  thêm 9 người bạn nữa</div>
-                                    <input class="form-control form-control-sidebar m-2" type="search" placeholder="Nhập tên người dùng của bạn bè" aria-label="Search" style="width:390px">
-                                    <div class="form-control form-control-sidebar m-2" style="width:390px;height:50px">
-                                        <img src="~/Content/dist/img/logo_discord.png" alt="AdminLTE Logo" class="brand-image img-circle"
-                                             style="opacity:2.0;width:30px;height:30px;margin-left:3px;" />
-                                        <span class="text-black-50">Chipxinhvodoi</span>
-                                        <span><input type="checkbox" name="choice" value="choice" /></span>
-                                    </div>
-                                    <button class="btn btn-info align-self-xl-center m-2" style="width:390px">Tạo nhóm DM</button>
-                                </div>
                             </li>
                         </ul>
                         <div class="listfen rounded">
                             <div class="list-friend">
-                                <script id="friend-template" type="x-handlebars-template">
-                                {{#each this}}
-                                    <div class="list-friend-item clickFriend" href="{{ObjectGuid}}">
-                                        <div class="avatar online">
-                                            <img class="rounded-circle" src={{Image}} alt="" />
-                                        </div>
-                                        <div class="content-friend-item">
-                                            <div class="nameDeco">{{Name}}</div>
-                                        </div>
-                                        <div class="chidren-float-right">
-                                            <i class="fas fa-times"></i>
-                                        </div>
-                                    </div>
-                                {{/each}}
-                                </script>
+                                <!--list Friend-->
+
                             </div>
                         </div>
                     </div>
@@ -116,7 +294,7 @@
             <!-- Navbar Chat -->
             <nav class="main-header navbar navbar-expand navbar-dark elevation-1">
                 <!-- Left navbar links -->
-                <div class="left-navbar">
+                <div class="left-navbar" id="title-chatbox">
                     <i class="fas fa-at"></i>
                     Lan Hương
                 </div>
@@ -125,69 +303,21 @@
                 <ul class="navbar-nav ml-auto">
                     <!-- Messages Dropdown Menu -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link" data-toggle="dropdown" href="#">
-                            <i class="far fa-comments"></i>
-                            <span class="badge badge-danger navbar-badge">3</span>
+                        <a class="nav-link" id="nof-message" data-toggle="dropdown" href="#">
+                            <i class="far fa-comments fa-lg"></i>
+                            <span class="badge badge-danger navbar-badge" id="number-nof-mes">3</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
-                            <a href="#" class="dropdown-item">
-                                <!-- Message Start -->
-                                <div class="media">
-                                    <img src="~/Content/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                                    <div class="media-body">
-                                        <h3 class="dropdown-item-title">
-                                            Brad Diesel
-                                            <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                        </h3>
-                                        <p class="text-sm">Call me whenever you can...</p>
-                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                    </div>
-                                </div>
-                                <!-- Message End -->
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <!-- Message Start -->
-                                <div class="media">
-                                    <img src="~/Content/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                    <div class="media-body">
-                                        <h3 class="dropdown-item-title">
-                                            John Pierce
-                                            <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                        </h3>
-                                        <p class="text-sm">I got your message bro</p>
-                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                    </div>
-                                </div>
-                                <!-- Message End -->
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <!-- Message Start -->
-                                <div class="media">
-                                    <img src="~/Content/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                    <div class="media-body">
-                                        <h3 class="dropdown-item-title">
-                                            Nora Silvester
-                                            <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                                        </h3>
-                                        <p class="text-sm">The subject goes here</p>
-                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                    </div>
-                                </div>
-                                <!-- Message End -->
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="dropdown-nof-message">
+                            
                         </div>
                     </li>
                     <!-- Notifications Dropdown Menu -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link" data-toggle="dropdown" href="#">
-                            <i class="far fa-bell"></i>
+                        <a class="nav-link" data-toggle="dropdown" href="#" id="nof-notifications">
+                            <i class="far fa-bell fa-lg"></i>
                             <span class="badge badge-warning navbar-badge">15</span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="dropdown-nof-notifications">
                             <span class="dropdown-item dropdown-header">15 Notifications</span>
                             <div class="dropdown-divider"></div>
                             <a href="#" class="dropdown-item">
@@ -208,6 +338,12 @@
                             <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                         </div>
                     </li>
+                    <!-- Notifications Dropdown Menu -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="logout" href="#">
+                            <i class="fas fa-sign-out-alt fa-lg"></i>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <!-- /.navbar -->
@@ -217,6 +353,7 @@
         </div>
         <!-- ./wrapper -->
     </div>
+
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="container-fluid">
@@ -225,38 +362,14 @@
                     <div class="listFriends">
                         <div class="card">
                             <div class="card-body msg_card_body s message scrollbar force-overflow" id="div_msg">
-                                <script id="message-template" type="x-handlebars-template">
-                                {{#each this}}
-                                {{#if_eq ObjectCategory 0}}
-                                <div class="d-flex justify-content-start mb-4">
-                                    <div class="img_cont_msg">
-                                        <img src="{{UserAccount.Image}}" class="rounded-circle user_img_msg">
-                                    </div>
-                                    <div class="msg_cotainer">
-                                        {{MessageContent}}
-                                        <span class="msg_time">{{CreateDate}}</span>
-                                    </div>
-                                </div>
-                                {{else}}
-                                <div class="d-flex justify-content-end mb-4">
-                                    <div class="msg_cotainer_send">
-                                        {{MessageContent}}
-                                        <span class="msg_time_send">{{CreateDate}}</span>
-                                    </div>
-                                    <div class="img_cont_msg">
-                                        <img src="{{UserAccount.Image}}" class="rounded-circle user_img_msg">
-                                    </div>
-                                </div>
-                                {{/if_eq}}
-                                {{/each}}
-                                </script>
+
                             </div>
                             <div class="card-footer">
                                 <div class="input-group">
                                     <div class="input-group-append">
                                         <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
                                     </div>
-                                    <div class="form-control type_msg" placeholder="Type your message..." contenteditable="true" id="div_sendMsg">
+                                    <div idd class="form-control type_msg" placeholder="Type your message..." contenteditable="true" id="div_sendMsg">
                                     </div>
                                     <div class="input-group-append">
                                         <span class="input-group-text send_btn"><i class="far fa-grin mr-2"></i><i class="fas fa-location-arrow" id="i_sendMessage"></i></span>
@@ -269,55 +382,21 @@
                 <!-- Cột Bên Phải Ngoài Cùng -->
                 <div class="member-comlumn">
                     <div class="content-member-group header-member-group">
-                        <span>
-                            Trực tuyến-3
-                        </span>
+                        <!--Danh sách thành viên online trong server chat-->
+                        Trực tuyến-
+                        <span id="number-member-online"></span>
                     </div>
-                    <div class="content-member-group member">
-                        <div class="layout-member">
-                            <div class="avatar online">
-                                <img class="rounded-circle" src="~/Content/dist/img/logo_discord.png" alt="" />
-                            </div>
-                            <div class="content-friend-item">
-                                <div class="nameDeco">Chipxinhvodoi</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content-member-group member">
-                        <div class="layout-member">
-                            <div class="avatar online">
-                                <img class="rounded-circle" src="~/Content/dist/img/logo_discord.png" alt="" />
-                            </div>
-                            <div class="content-friend-item">
-                                <div class="nameDeco">Chipxinhvodoi</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content-member-group member">
-                        <div class="layout-member">
-                            <div class="avatar online">
-                                <img class="rounded-circle" src="~/Content/dist/img/logo_discord.png" alt="" />
-                            </div>
-                            <div class="content-friend-item">
-                                <div class="nameDeco">Chipxinhvodoi</div>
-                            </div>
-                        </div>
-                    </div>
+                    <ul class="nav nav-pills nav-sidebar flex-column list-online" data-widget="treeview" role="menu" data-accordion="false">
+                    </ul>
+
                     <div class="content-member-group header-member-group">
-                        <span>
-                            Ngoại Tuyến-3
-                        </span>
+                        <!--Danh sách thành viên offline trong server chat-->
+                        Ngoại Tuyến-
+                        <span id="number-member-offline"></span>
                     </div>
-                    <div class="content-member-group member">
-                        <div class="layout-member offline-member">
-                            <div class="avatar offline">
-                                <img class="rounded-circle" src="~/Content/dist/img/logo_discord.png" alt="" />
-                            </div>
-                            <div class="content-friend-item">
-                                <div class="nameDeco">Chipxinhvodoi</div>
-                            </div>
-                        </div>
-                    </div>
+                    <ul class="nav nav-pills nav-sidebar flex-column list-offline" data-widget="treeview" role="menu" data-accordion="false">
+                    </ul>
+
                 </div>
             </div>
         </div><!-- /.container-fluid -->
