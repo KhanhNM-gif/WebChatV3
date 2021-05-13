@@ -226,7 +226,6 @@
         }
     },
     ClickServer: async function (GuidServer,GuidChannel) {
-
         $(".tabPeople").show();
         $(".member-comlumn").show();
 
@@ -263,8 +262,21 @@
                 }
             });
             const json3 = await res3.json();
+
+            const res4 = await fetch('/api/ApiRole/GetRoleServer?GuidServer=' + GuidServer, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': Authorization
+                }
+            });
+            const json4 = await res4.json();
+            await ChatingIndex.GenerateRoleServer(json4);
+
             await ChatingIndex.GenerateMemberOffline(json3.Object.outLtOfflineMember, true);
             await ChatingIndex.GenerateMemberOnline(json3.Object.outLtOnlineMember, true);
+
+            await ChatingIndex.GetListGroupRole();
 
             if (GuidChannel!='')ChatingIndex.ClickChannel(GuidChannel, GuidServer);
             ChatingIndex.registerEvent();
@@ -297,6 +309,26 @@
             const json = await res.json();
 
             ChatingIndex.GenerateMessage(json.Object, true);
+        }
+        else {
+            window.location.replace("/UserRegister/Login");
+        }
+    },
+
+    GetListGroupRole: async function () {
+        var Authorization = localStorage.getItem("Authorization");
+        if (Authorization != null) {
+            var splitURL = window.location.href.split("/");
+            if (splitURL.length == 3) splitURL.pop()
+            const res = await fetch('/api/ApiGroupRole/GetOne?RoleGroupID=' + 1 + '&GuidServer=' + splitURL.pop(), {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': Authorization
+                },
+            })
+            const json = await res.json();
+            this.GenerateRoleServer(json.Object);
         }
         else {
             window.location.replace("/UserRegister/Login");

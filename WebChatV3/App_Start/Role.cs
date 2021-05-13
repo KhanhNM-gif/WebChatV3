@@ -18,20 +18,6 @@ public class RoleGroup
     [JsonIgnore]
     public int UserIDCreate { get; set; }
     public List<Role> ListRole = new List<Role>();
-    public List<string> ListRoleDescription
-    {
-        get
-        {
-            List<string> lt = new List<string>();
-            var vGroup = ListRole.Where(v => v.IsRole).GroupBy(v => new { v.TabID, v.TabName });
-            foreach (var item in vGroup)
-            {
-                lt.Add(item.Key.TabName + ": " + string.Join("; ", item.Select(v => v.RoleName)));
-            }
-
-            return lt;
-        }
-    }
     public bool IsDelete { get; set; }
 
     public const int ADMIN = 1, USER = 2, ADMIN_DEPT = 3;
@@ -94,12 +80,12 @@ public class RoleGroup
         return msg;
     }
 
-    public static string GetByUserID(long UserID,long IdServer, out RoleGroup rg)
+    public static string GetByUserID(long UserID, long IdServer, out RoleGroup rg)
     {
         rg = null;
 
         Mod mod;
-        string msg = Mod.GetOne(UserID,IdServer, out mod);
+        string msg = Mod.GetOne(UserID, IdServer, out mod);
         if (msg.Length > 0) return msg;
 
         int RoleGroupID;
@@ -125,13 +111,6 @@ public class Role
     public string RoleName { get; set; }
     public int TabID { get; set; }
     public int OrderID { get; set; }
-    public string TabName
-    {
-        get
-        {
-            return Tab.GetTabName(TabID);
-        }
-    }
     public bool IsRole { get; set; }
 
     public Role()
@@ -144,79 +123,49 @@ public class Role
     }
 
     public const long QUYEN_SERVER_ROINHOM = 1;
-    public const long QUYEN_SERVER_MOITHAM = 4;
     public const long QUYEN_SERVER_MOITHAMGIA = 2;
+    public const long QUYEN_SERVER_XEMTHANHVIEN = 4;
+    public const long QUYEN_SERVER_THEMKENH = 8;
+    public const long QUYEN_SERVER_XOAKENH = 16;
 
 
 
-    public static List<Role> GetListRoleServer()
+    public static List<Role> GetListRole()
     {
         return new List<Role>
         {
-             new Role { RoleName="Xem thành viên", RoleValue = ROLE_NVCTXL_IsVisitPage, TabID = Constants.TabID.NVCTXL,OrderID=1},
-             new Role { RoleName="Rời Server", RoleValue = ROLE_NVCTXL_AddMission, TabID = Constants.TabID.NVCTXL,OrderID=1},
-             new Role { RoleName="Xuất file", RoleValue = ROLE_NVCTXL_ExportFile, TabID = Constants.TabID.NVCTXL,OrderID=1},
+             new Role { RoleName="Rời Server", RoleValue = QUYEN_SERVER_ROINHOM, TabID = Constants.TabID.RoleServer,OrderID=1},
+             new Role { RoleName="Rời Server", RoleValue = QUYEN_SERVER_MOITHAMGIA, TabID = Constants.TabID.RoleServer,OrderID=1},
+             new Role { RoleName="Xem Thành Viên", RoleValue = QUYEN_SERVER_XEMTHANHVIEN, TabID = Constants.TabID.RoleServer,OrderID=1},
+             new Role { RoleName="Thêm Channel", RoleValue = QUYEN_SERVER_THEMKENH, TabID = Constants.TabID.RoleServer,OrderID=1},
+             new Role { RoleName="Xóa Kênh", RoleValue = QUYEN_SERVER_XOAKENH, TabID = Constants.TabID.RoleServer,OrderID=1},
         };
     }
 
-    public static string CheckViewAllMission(int UserID, int TabID, out bool IsViewAll)
-    {
-        string msg = "";
-        IsViewAll = false;
-        if (TabID == Constants.TabID.NVG)
-        {
-            msg = Role.Check(UserID, Constants.TabID.NVG, Role.ROLE_NVG_VIEWALL, out IsViewAll);
-            if (msg.Length > 0) return msg;
-        }
-
-        return msg;
-    }
-    public static string CheckUQXLAllUser(int UserID, out bool IsUQXLAllUser)
-    {
-        return Role.Check(UserID, Constants.TabID.UQXL, Role.ROLE_UQXL_QT_ALL, out IsUQXLAllUser);
-    }
-    public static string CheckVisitPage(int UserID, int TabID)
-    {
-        long RoleValueVisitPage;
-        string msg = Role.GetRoleValueVisitPage(TabID, out RoleValueVisitPage);
-        if (msg.Length > 0) return msg;
-
-        return Check(UserID, TabID, RoleValueVisitPage);
-    }
-    public static string CheckVisitPage(RoleGroup rg, int TabID, out bool IsRole)
-    {
-        IsRole = false;
-
-        long RoleValueVisitPage;
-        string msg = Role.GetRoleValueVisitPage(TabID, out RoleValueVisitPage);
-        if (msg.Length > 0) return msg;
-
-        return Role.Check(rg, TabID, RoleValueVisitPage, out IsRole);
-    }
-    public static string Check(int UserID, int TabID)
+    public static string Check(long UserID,long ServerID, int TabID)
     {
         bool IsRole;
-        string msg = Check(UserID, TabID, -1, out IsRole);
+        string msg = Check(UserID,ServerID, TabID, -1, out IsRole);
         if (msg.Length > 0) return msg;
 
         if (!IsRole) return "Bạn không có quyền thực hiện chức năng này".ToMessageForUser();
         else return "";
     }
-    public static string Check(int UserID, int TabID, long RoleValue)
+    public static string Check(long UserID, long ServerID, int TabID, long RoleValue)
     {
         bool IsRole;
-        string msg = Check(UserID, TabID, RoleValue, out IsRole);
+        string msg = Check(UserID, ServerID, TabID, RoleValue, out IsRole);
         if (msg.Length > 0) return msg;
 
         if (!IsRole) return "Bạn không có quyền thực hiện chức năng này".ToMessageForUser();
         else return "";
     }
-    public static string Check(int UserID, int TabID, long RoleValue, out bool IsRole)
+    public static string Check(long UserID, long ServerID, int TabID, long RoleValue, out bool IsRole)
     {
         IsRole = false;
 
         RoleGroup rg;
-        string msg = RoleGroup.GetByUserID(UserID, out rg);
+        string msg = RoleGroup.GetByUserID(UserID, ServerID, out rg);
         if (msg.Length > 0) return msg;
 
         return Check(rg, TabID, RoleValue, out IsRole);
@@ -241,122 +190,19 @@ public class Role
 
         return "";
     }
-    public static string GetRoleValueVisitPage(int tabID, out long RoleValue)
-    {
-        RoleValue = 0;
-        switch (tabID)
-        {
-            case Constants.TabID.NVCTXL:
-                RoleValue = Role.ROLE_NVCTXL_IsVisitPage;
-                break;
-            case Constants.TabID.NVG:
-                RoleValue = Role.ROLE_NVG_IsVisitPage;
-                break;
-            case Constants.TabID.NVPHXL:
-                RoleValue = Role.ROLE_NVPHXL_IsVisitPage;
-                break;
-            case Constants.TabID.NGUONNV:
-                RoleValue = Role.ROLE_NGUONNV_IsVisitPage;
-                break;
-            case Constants.TabID.NNV:
-                RoleValue = Role.ROLE_NNV_IsVisitPage;
-                break;
-            case Constants.TabID.Tag:
-                RoleValue = Role.ROLE_Tag_IsVisitPage;
-                break;
-            case Constants.TabID.UQXL:
-                RoleValue = Role.ROLE_UQXL_IsVisitPage;
-                break;
-            case Constants.TabID.NHOMDONVI:
-                RoleValue = Role.ROLE_NHOMDONVI_IsVisitPage;
-                break;
-            case Constants.TabID.NVTD:
-                RoleValue = Role.ROLE_NVTD_IsVisitPage;
-                break;
-            case Constants.TabID.NGUOIDUNG:
-                RoleValue = Role.ROLE_QLND_IsVisitPage;
-                break;
-            case Constants.TabID.DONVI:
-                RoleValue = Role.ROLE_DONVI_IsVisitPage;
-                break;
-            case Constants.TabID.CHUCVU:
-                RoleValue = Role.ROLE_CHUCVU_IsVisitPage;
-                break;
-            case Constants.TabID.HETHONG:
-                RoleValue = Role.ROLE_HETHONG_IsVisitPage;
-                break;
-            case Constants.TabID.NHOMQUYEN:
-                RoleValue = Role.ROLE_NHOMQUYEN_IsVisitPage;
-                break;
-            case Constants.TabID.SUB_TAB_TVB:
-                RoleValue = Role.ROLE_SUB_TAB_TVB_IsVisitPage;
-                break;
-            case Constants.TabID.SUB_TAB_TNK:
-                RoleValue = Role.ROLE_SUB_TAB_TNK_IsVisitPage;
-                break;
-            case Constants.TabID.SUB_TAB_TBD:
-                RoleValue = Role.ROLE_SUB_TAB_TBD_IsVisitPage;
-                break;
-            default:
-                break;
-        }
-        return "";
-    }
     public static string GetRoleGroupCol(int tabID, RoleGroup rg, out long RoleGroupCol)
     {
         RoleGroupCol = 0;
         switch (tabID)
         {
-            case Constants.TabID.NVCTXL:
-                RoleGroupCol = rg.NVCTXL;
+            case Constants.TabID.RoleServer:
+                RoleGroupCol = rg.QuyenServer;
                 break;
-            case Constants.TabID.NVG:
-                RoleGroupCol = rg.NVG;
+            case Constants.TabID.RoleChannel:
+                RoleGroupCol = rg.QuyenChannel;
                 break;
-            case Constants.TabID.NVPHXL:
-                RoleGroupCol = rg.NVPHXL;
-                break;
-            case Constants.TabID.NGUONNV:
-                RoleGroupCol = rg.NGUONNV;
-                break;
-            case Constants.TabID.NNV:
-                RoleGroupCol = rg.NNV;
-                break;
-            case Constants.TabID.Tag:
-                RoleGroupCol = rg.Tag;
-                break;
-            case Constants.TabID.UQXL:
-                RoleGroupCol = rg.UQXL;
-                break;
-            case Constants.TabID.NHOMDONVI:
-                RoleGroupCol = rg.NHOMDONVI;
-                break;
-            case Constants.TabID.NVTD:
-                RoleGroupCol = rg.NVTD;
-                break;
-            case Constants.TabID.NGUOIDUNG:
-                RoleGroupCol = rg.NGUOIDUNG;
-                break;
-            case Constants.TabID.DONVI:
-                RoleGroupCol = rg.DONVI;
-                break;
-            case Constants.TabID.CHUCVU:
-                RoleGroupCol = rg.CHUCVU;
-                break;
-            case Constants.TabID.HETHONG:
-                RoleGroupCol = rg.HETHONG;
-                break;
-            case Constants.TabID.NHOMQUYEN:
-                RoleGroupCol = rg.NHOMQUYEN;
-                break;
-            case Constants.TabID.SUB_TAB_TVB:
-                RoleGroupCol = rg.SUB_TAB_TVB;
-                break;
-            case Constants.TabID.SUB_TAB_TNK:
-                RoleGroupCol = rg.SUB_TAB_TNK;
-                break;
-            case Constants.TabID.SUB_TAB_TBD:
-                RoleGroupCol = rg.SUB_TAB_TBD;
+            case Constants.TabID.RoleMember:
+                RoleGroupCol = rg.QuyenThanhVien;
                 break;
             default:
                 break;

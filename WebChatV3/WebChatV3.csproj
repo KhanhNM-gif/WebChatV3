@@ -172,6 +172,7 @@
     <Compile Include="App_Start\FriendshipRegisterHistory.cs" />
     <Compile Include="App_Start\Member.cs" />
     <Compile Include="App_Start\Message.cs" />
+    <Compile Include="App_Start\Mod.cs" />
     <Compile Include="App_Start\Role.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Server.cs" />
@@ -209,6 +210,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\ApiGroupRoleController.cs" />
     <Compile Include="Controllers\ApiUploadFileController.cs" />
     <Compile Include="Controllers\ApiUserAccountController.cs" />
     <Compile Include="Controllers\ApiChannelController.cs" />
@@ -2602,7 +2604,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\UserRegister\Register.cshtml" />
     <Content Include="Views\Chating\Index.cshtml" />
-    <Content Include="Views\Chating\Index2.cshtml" />
     <Content Include="Scripts\moment.min.js.map" />
     <Content Include="Scripts\moment-with-locales.min.js.map" />
     <Content Include="Scripts\jquery.contextMenu.min.js.map" />
