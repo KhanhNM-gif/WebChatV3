@@ -585,12 +585,11 @@ pre code {
 }
 
 .container-fluid, .container-sm, .container-md, .container-lg, .container-xl {
-    width: 100%;
-    background: rgb(32, 34, 37);
-    padding-right: 7.5px;
-    padding-left: 7.5px;
-    margin-right: auto;
-    margin-left: auto;
+  width: 100%;
+  padding-right: 7.5px;
+  padding-left: 7.5px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 @media (min-width: 576px) {

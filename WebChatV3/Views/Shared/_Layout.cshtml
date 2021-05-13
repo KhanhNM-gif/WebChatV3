@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AdminLTE 3 | Dashboard</title>
+
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -11,7 +12,7 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
-    <link href="~/Content/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
     <!-- Bootstrap 4 -->
     <link rel="stylesheet" href="~/Content/plugins/bootstrap/css/bootstrap.css">
     <!-- iCheck -->
@@ -24,130 +25,42 @@
     <link rel="stylesheet" href="~/Content/style.css">
     <link rel="stylesheet" type="text/css" href="~/Content/util.css">
     <link rel="stylesheet" type="text/css" href="~/Content/main.css">
-    <link href="~/Content/dist/css/stylechatbox.css" rel="stylesheet" />
-    
 
-    <style>
 
-        .test1 {
-            display: flex;
-        }
-
-        .fisrtbar {
-            padding: 0px 12px 12px 12px;
-            background-color: rgb(32, 34, 37);
-            height: 100vh;
-        }
-
-        .item-2hkk8m {
-            height: 56px !important;
-            width: 48px;
-            margin: 0;
-            border-radius: 0;
-            transform: unset !important;
-            clip-path: inset(0 round 20%);
-            transition: .2s linear;
-            opacity: 1 !important;
-            background: rgba(80, 80, 80, 0);
-        }
-
-            .item-2hkk8m[style*="opacity: 0.7"] {
-                background: rgba(200, 200, 200, .6)
-            }
-
-            .item-2hkk8m[style*="opacity: 1"] {
-                background: rgba(200, 200, 200, .8)
-            }
-
-        .test2 {
-            position: relative;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            justify-content: center;
-            width: 48px;
-            outline: none;
-        }
-
-        .logodc {
-            height: 54px;
-            margin-bottom: 8px;
-        }
-
-        .cotent {
-            flex-grow: 100;
-        }
-    </style>
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="Content/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
 </head>
 <body>
-    <!-- Modal HTML -->
-    <div id="modal-create-server" class="modal show fade">
-        <div class="modal-dialog modal-login">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title">Tùy chỉnh máy chủ của bạn</div>
-                    <br>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="close-modal-create-server">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="dis-block chuthichmaychu">Hãy cá nhân hóa máy chủ bằng cách đặt tên và thêm biểu tượng đại diện. Bạn có thể đổi bất cứ lúc nào.</div>
-                    <div class="upload-img">
-                        <div class="avatar img-upload">
-                            <img class="rounded-circle" id="img-choose" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRviKII9Am0mLcNt36vNioSTaRIEErqwxgcww&usqp=CAU" alt="" />
-                        </div>
-                    </div>
-                    <div class="upload-img">
-                        <label for="upload-photo" class="btn btn-primary">Chọn ảnh</label>
-                        <input type="file" name="photo" accept=".jpg,.jpeg,.png,.gif" id="upload-photo" />
-                    </div>
-                    <div class="form-group">
-                        <label>Tên Máy chủ</label>
-                        <input type="text" class="form-control" name="name-new-server" required="required">
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <div class="btn btn-primary" id="btn-create-server" for="close-modal-create-server">Tạo máy chủ</div>
-                    <div class="btn btn-primary close-modal" for="close-modal-create-server">Đóng</div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="container-fluid">
         <div class="test1">
-            @RenderBody()
+            @RenderBody();
         </div>
     </div>
 
     <script src="~/Content/plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="~/Content/plugins/jquery-ui/jquery-ui.min.js"></script>
-    <script src="~/Scripts/moment.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>$.widget.bridge('uibutton', $.ui.button)</script>
     <!-- Bootstrap 4 -->
-    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Content/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/plugins/moment/moment.min.js"></script>
     <!-- Tempusdominus Bootstrap 4 -->
-    <script src="~/Content/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js"></script>
+    <script src="~/Content/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="~/Content/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/Content/dist/js/adminlte.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="~/Content/dist/js/demo.js"></script>
-    @*   <script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <script src="~/Scripts/main.js"></script>
-    <script src="~/Scripts/handlebars.min.js"></script>
-    <link href="~/Content/jquery.contextMenu.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery.contextMenu.min.js"></script>
-    <script src="~/Scripts/jquery.ui.position.js"></script>
-    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
-    <!--Reference the autogenerated SignalR hub script. -->
-    <script src="~/signalr/hubs"></script>
-    <script src="~/Asset/js/UploadFile.js"></script>
-    <script src="~/Asset/js/Modal.js"></script>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
 </body>
 </html>

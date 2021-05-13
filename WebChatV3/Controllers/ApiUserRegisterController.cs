@@ -12,36 +12,6 @@ namespace WebChatV3.Controllers
 {
     public class ApiUserRegisterController : Authentication
     {
-        [HttpGet]
-        public Result GetOne(Guid GuidUser)
-        {
-            if (!ResultCheckToken.isOk) return ResultCheckToken;
-
-            string msg = UserAccount.GetOnByObjectGuid(GuidUser, out UserAccount outUserAccount);
-            if (msg.Length > 0) return Log.ProcessError(msg).ToResultError();
-            return outUserAccount.ToResultOk();
-        }
-        [HttpGet]
-        public Result GetOneByObjectFriendShip(Guid GuidFriend)
-        {
-            if (!ResultCheckToken.isOk) return ResultCheckToken;
-            string msg = FriendShip.GetOneByObjectGuid(GuidFriend, out FriendShip outFriendShip);
-            if (outFriendShip == null || !(outFriendShip.IdUser1 == UserToken.UserID || outFriendShip.IdUser2 == UserToken.UserID)) return "lỗi".ToResultError();
-
-            msg = UserAccount.GetOneByIdUser(outFriendShip.IdUser1 == UserToken.UserID? outFriendShip.IdUser2: outFriendShip.IdUser1, out UserAccount outUserAccount);
-            if (msg.Length > 0) return Log.ProcessError(msg).ToResultError();
-            return outUserAccount.ToResultOk();
-        }
-        [HttpGet]
-        public Result GetCurrentUser()
-        {
-            if (!ResultCheckToken.isOk) return ResultCheckToken;
-
-            string msg = UserAccount.GetOneByIdUser(UserToken.UserID,out UserAccount outUserAccount);
-            if (msg.Length > 0) return Log.ProcessError(msg).ToResultError();
-            return outUserAccount.ToResultOk();
-        }
-
         [HttpPost]
         public Result RegisterUser([FromBody] UserRegister InputuserRegister)
         {
@@ -133,7 +103,7 @@ namespace WebChatV3.Controllers
             string msg = "";
 
             msg = DoLogin(userLogin, out UserToken userToken, out UserAccount userAccount);
-            if (msg.Length > 0) { return Log.ProcessError(msg).ToResultError(); }
+            if (msg.Length > 0) { return Log.WriteErrorLog(msg).ToResultError(); }
 
             return new
             {
@@ -176,15 +146,6 @@ namespace WebChatV3.Controllers
             if (msg.Length > 0) { return msg; }
 
             return msg;
-        }
-        [HttpGet]
-        public Result Logout()
-        {
-            if (!ResultCheckToken.isOk) return ResultCheckToken;
-
-            string msg = CacheUserToken.Logout(UserToken);
-            if (msg.Length > 0) return Log.ProcessError(msg).ToResultError();
-            return msg.ToResultOk();
         }
     }
 

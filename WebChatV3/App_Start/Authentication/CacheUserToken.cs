@@ -1,12 +1,9 @@
 ﻿using BSS;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Web;
 
 /// <summary>
@@ -60,13 +57,6 @@ public static class CacheUserToken
         if (msg.Length > 0) return Log.ProcessError(msg).ToResult(-1);
         return Result.ResultOk;
     }
-    public static bool GetResultUserToken(string Token)
-    {
-        string msg = GetUserToken(Token,out UserToken user);
-        if (msg.Length > 0) return false;
-
-        return true;
-    }
     public static string GetUserToken(out UserToken UserToken)
     {
         UserToken = null;
@@ -117,12 +107,18 @@ public static class CacheUserToken
 
         return "";
     }
-    public static string Logout(UserToken userToken)
+    public static string Logout()
     {
         string msg = "";
+        UserToken UserToken;
+        msg = GetUserToken(out UserToken);
+        if (msg.Length > 0) return msg;
 
-        bool isRemove = LtUser_Token.Remove(userToken);
+        bool isRemove = LtUser_Token.Remove(UserToken);
         if (!isRemove) return "Xóa token lỗi";
+
+        msg = UserToken.Delete(UserToken.ID);
+        if (msg.Length > 0) return msg;
 
         return msg;
     }

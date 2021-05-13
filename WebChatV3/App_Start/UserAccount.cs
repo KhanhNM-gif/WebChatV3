@@ -20,38 +20,10 @@ public class UserAccount
     public bool IsActive { get; set; }
     public DateTime CreateDate { get; set; }
     public DateTime LastUpdate { get; set; }
-    public string Image { get; set; }
-    public string ObjectFriend { get; set; }
 
     static public string Login(string Username, out UserAccount outUserAccount)
     {
         return DBM.GetOne("usp_User_Login", new { Username }, out outUserAccount);
-    }
-
-    static public string GetListFriendById(long IdUser, out List<UserAccount> outLtUserAccount)
-    {
-        return DBM.GetList("usp_User_GetListFriendByUserID", new { IdUser }, out outLtUserAccount);
-    }
-
-    static public string GetListByIdServer(long IdUser, out List<UserAccount> outLtUserAccount)
-    {
-        return DBM.GetList("usp_User_GetListByServerID", new { IdUser }, out outLtUserAccount);
-    }
-    static public string GetListByGuidServer(Guid objectGuid, out List<UserAccount> outLtUserAccount)
-    {
-        return DBM.GetList("usp_User_GetListByGuidServer", new { objectGuid }, out outLtUserAccount);
-    }
-    static public string GetOnByObjectGuid(Guid objectGuid, out UserAccount outUserAccount)
-    {
-        return DBM.GetOne("usp_User_GetOnByObjectGuid", new { objectGuid }, out outUserAccount);
-    }
-    static public string GetOneByIdUser(long IdUser, out UserAccount outUserAccount)
-    {
-        return DBM.GetOne("usp_User_GetOneByIdUser", new { IdUser }, out outUserAccount);
-    }
-    static public string GetListByIdUsers(string IdUsers, out List<UserAccount> outLtUserAccount)
-    {
-        return DBM.GetList("usp_User_GetListByIdUsers", new { IdUsers }, out outLtUserAccount);
     }
 }
 

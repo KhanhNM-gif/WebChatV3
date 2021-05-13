@@ -585,13 +585,12 @@ pre code {
 }
 
 .container-fluid, .container-sm, .container-md, .container-lg, .container-xl {
-    width: 100%;
-    background: rgb(32, 34, 37);
-    min-height: inherit;
-    padding-right: 0px;
-    padding-left: 0px;
-    margin-right: 0px;
-    margin-left: 0px;
+  width: 100%;
+  min-height: inherit;
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
 }
 
 @media (min-width: 576px) {
@@ -4283,7 +4282,7 @@ input[type="button"].btn-block {
 
 .nav-link {
   display: block;
-  padding: 0.5rem 0.5rem;
+  padding: 0.5rem 1rem;
 }
 
 .nav-link:hover, .nav-link:focus {
@@ -11847,6 +11846,10 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
 .user-panel .status,
 .user-panel .dropdown-menu {
   font-size: 0.875rem;
+}
+
+.nav-sidebar .nav-item > .nav-link {
+  margin-bottom: .2rem;
 }
 
 .nav-sidebar .nav-item > .nav-link .right {
